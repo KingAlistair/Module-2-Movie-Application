@@ -1,3 +1,5 @@
+import java.io.File;
+import java.io.FileWriter;
 import java.util.ArrayList;
 
 public class MovieAndActorDatabase {
@@ -56,13 +58,19 @@ public class MovieAndActorDatabase {
         allMovieList.add(madmax);
 
     //Next Movie
-
     }
 
-    public void displayAllMOvie() {
+    public ArrayList<Actor> getAllActorList() {
+        return allActorList;
+    }
+
+    public ArrayList<Movie> getAllMovieList() {
+        return allMovieList;
+    }
+
+    public void displayAllMovie() {
         for (Movie movie: allMovieList
              ) {
-
             movie.displayMovie();
         }
     }
