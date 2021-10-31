@@ -65,7 +65,6 @@ public class FileIO {
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
-
         return movieList;
     }
 }

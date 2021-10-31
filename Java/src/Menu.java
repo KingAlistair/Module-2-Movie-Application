@@ -57,6 +57,7 @@ public class Menu {
             input = stringScanner();
             if (input.equals(user.getPassword())) {
                 System.out.println("You have logged in successfully!\n");
+                System.out.println("Welcome " + user.getUserName() + "!\n");
                 mainMenu(user);
             } else {
                 System.out.println("Password is incorrect! Try again!");
@@ -66,8 +67,11 @@ public class Menu {
     }
 
     public void register() {
+        //Get accountList from file
         ArrayList<Account> accountList = FileIO.accountListDeserialization();
 
+
+        //Refistration
         String username = null;
         boolean loop = true;
         boolean isUsed;
@@ -95,9 +99,11 @@ public class Menu {
         System.out.println("Choose a password!");
         String password = stringScanner();
 
+        //Create Account add it to accountlist
         Account account = new Account(username, password);
         accountList.add(account);
 
+        //accountList saved into File
         FileIO.accountListSerialization(accountList);
 
         System.out.println("Registration is complete. Please log in!\n");
@@ -105,48 +111,244 @@ public class Menu {
     }
 
     public void mainMenu(Account user) {
-        System.out.println("Welcome, " + user.getUserName() + "!\n");
         System.out.println("Main menu:");
+        System.out.println();
         System.out.println("1. All movies");
-        System.out.println("2. Favorite movies");
-        System.out.println("3. History");
-        System.out.println("4. Quit");
+        System.out.println("2. Favorite movies (" + user.favoriteMovies.size() + ")");
+        System.out.println("3. History (" + user.seenMovies.size() + ")");
+        System.out.println("4 Search movie");
+        System.out.println("5. Quit");
 
         String input = stringScanner();
 
-        if (input.equals("1")) {
-            displayMovies(user);
+        switch (input) {
+            case "1":
+                displayMovieList(FileIO.movieListDeserialization());
+                mainMenu(user);
+                break;
+
+            case "2":
+                favoriteMovies(user);
+                mainMenu(user);
+                break;
+
+            case "3":
+                history(user);
+                mainMenu(user);
+                break;
+
+            case "4":
+                search();
+                mainMenu(user);
+                break;
+
+            case "5":
+                System.exit(0);
+                break;
+
+            default:
+                mainMenu(user);
+                break;
         }
 
-        if (input.equals("2")) {
-        }
+    }
 
-        if (input.equals("3")) {
-        }
+    public void favoriteMovies(Account user) {
+        ArrayList<Movie> allMovies = FileIO.movieListDeserialization();
+        ArrayList<Movie> favoriteList = user.favoriteMovies;
+        System.out.println("Favorite list:");
+        displayMovieList(favoriteList);
 
-        if (input.equals("4")) {
-            System.exit(1);
-        } else {
-            mainMenu(user);
+        System.out.println("1. Add movie");
+        System.out.println("2. Remove movie");
+        System.out.println("3. Rate movie");
+        System.out.println(" Press anything else to Return to main menu");
+        String input = stringScanner();
+
+        switch (input) {
+
+            //Add movie
+            case "1":
+                System.out.println("All movies:");
+                displayMovieList(allMovies);
+                System.out.println("Choose a Movie ID to add it your Favorite list!");
+                input = stringScanner();
+
+                //Check if already in favoriteList
+                for (Movie movie : favoriteList
+                ) {
+                    if (input.equals(movie.getId())) {
+                        System.out.println(movie.getTitle() + " is already in your Favorite list!");
+                        history(user);
+                        break;
+                    }
+                }
+                //Check if its in allMoviesList
+                for (Movie movie2 : allMovies
+                ) {
+                    if (input.equalsIgnoreCase(movie2.getId())) {
+                        System.out.println("Do you want to add " + movie2.getTitle() + " to your Favorite list? (y/n)");
+                        input = stringScanner();
+                        if (input.equalsIgnoreCase("y")) {
+                            System.out.println();
+                            System.out.println(movie2.getTitle() + " was added to your Favorite list!");
+                            System.out.println();
+                            favoriteList.add(movie2);
+                            Account.saveUserIntoFile(user);
+                            history(user);
+                            break;
+                        }
+                    }
+                }
+                System.out.println("Movie was not found in our database!");
+                history(user);
+                break;
+//Remove movie
+            case "2":
+                displayMovieList(favoriteList);
+                System.out.println("Type in the \"ID\" of the movie you want to remove!");
+                input = stringScanner();
+
+                //Check if movie is in list
+                for (Movie movie : favoriteList) {
+                    if (input.equals(movie.getId())) {
+                        System.out.println("Do you want to remove " + movie.getTitle() + " from your Favorite list? (y/n)");
+                        input = stringScanner();
+
+                        if (input.equalsIgnoreCase("y")) {
+                            favoriteList.remove(movie);
+                            user.setFavoriteMovies(favoriteList);
+                            Account.saveUserIntoFile(user);
+                            favoriteMovies(user);
+                            break;
+                        }
+                    }
+                }
+
+                System.out.println("Movie was not found on your Favorite list!");
+                favoriteMovies(user);
+                break;
+            default:
+                mainMenu(user);
+                break;
         }
     }
 
-    public void displayMovies(Account user) {
-        ArrayList<Movie> movieList = FileIO.movieListDeserialization();
+    public void history(Account user) {
+        ArrayList<Movie> allMovies = FileIO.movieListDeserialization();
+        ArrayList<Movie> seenMovieList = user.seenMovies;
+        System.out.println("History:");
+        displayMovieList(seenMovieList);
 
-        System.out.println("There are currently " + movieList.size() + " movies available!\n");
+        System.out.println("1. Add movie");
+        System.out.println("2. Remove movie");
+        System.out.println("3. Rate movie");
+        System.out.println(" Press anything else to Return to main menu");
+        String input = stringScanner();
 
-        for (Movie movie : movieList) {
+        switch (input) {
+
+            //Add movie
+            case "1":
+                System.out.println("All movies:");
+                displayMovieList(allMovies);
+                System.out.println("Choose a Movie ID to add it your History list!");
+                input = stringScanner();
+
+                //Check if already in seenMovieList
+                for (Movie movie : seenMovieList
+                ) {
+                    if (input.equals(movie.getId())) {
+                        System.out.println(movie.getTitle() + " is already in your History list!");
+                        history(user);
+                        break;
+                    }
+                }
+                //Check if its in allMoviesList
+                for (Movie movie2 : allMovies
+                ) {
+                    if (input.equalsIgnoreCase(movie2.getId())) {
+                        System.out.println("Do you want to add " + movie2.getTitle() + " to your History list? (y/n)");
+                        input = stringScanner();
+                        if (input.equalsIgnoreCase("y")) {
+                            System.out.println();
+                            System.out.println(movie2.getTitle() + " was added to your History list!");
+                            System.out.println();
+                            seenMovieList.add(movie2);
+                            Account.saveUserIntoFile(user);
+                            history(user);
+                            break;
+                        }
+                    }
+                }
+                System.out.println("Movie was not found in our database!");
+                history(user);
+                break;
+//Remove movie
+            case "2":
+                displayMovieList(seenMovieList);
+                System.out.println("Type in the \"ID\" of the movie you want to remove!");
+                input = stringScanner();
+
+                //Check if movie is in list
+                for (Movie movie : seenMovieList) {
+                    if (input.equals(movie.getId())) {
+                        System.out.println("Do you want to remove " + movie.getTitle() + " from your History list? (y/n)");
+                        input = stringScanner();
+
+                        if (input.equalsIgnoreCase("y")) {
+                            seenMovieList.remove(movie);
+                            user.setFavoriteMovies(seenMovieList);
+                            Account.saveUserIntoFile(user);
+                            favoriteMovies(user);
+                            break;
+                        }
+                    }
+                }
+
+                System.out.println("Movie was not found on your History list!");
+                favoriteMovies(user);
+                break;
+            default:
+                mainMenu(user);
+                break;
+        }
+    }
+
+    public void search() {
+        System.out.println("Search: ");
+        ArrayList<Movie> allMovies = FileIO.movieListDeserialization();
+        String input = stringScanner();
+        for (Movie movie : allMovies
+        ) {
+            if (input.equalsIgnoreCase(movie.title) || input.equalsIgnoreCase(movie.genre)) {
+                movie.displayMovie();
+            }
+            for (Actor actor : movie.getActorList()
+            ) {
+                if (input.equalsIgnoreCase(actor.name)) {
+                    System.out.println(actor.name + " : " + movie.title);
+                }
+            }
+        }
+    }
+
+    public void displayMovieList(ArrayList<Movie> movieList) {
+        for (Movie movie : movieList
+        ) {
             movie.displayMovie();
         }
-        mainMenu(user);
     }
+
 
     public String stringScanner() {
         Scanner sc = new Scanner(System.in);
-        String input = sc.nextLine();
+        return sc.nextLine();
+    }
 
-        return input;
+    public int intScanner() {
+        Scanner sc = new Scanner(System.in);
+        return sc.nextInt();
     }
 
     public static void createDataFiles() {
