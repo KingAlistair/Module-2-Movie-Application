@@ -41,6 +41,10 @@ public class Movie implements java.io.Serializable {
         return rating;
     }
 
+    public void setRating(ArrayList<Double> rating) {
+        this.rating = rating;
+    }
+
     public void displayMovie() {
         System.out.println("====================================");
         System.out.println("Id: " + id);
