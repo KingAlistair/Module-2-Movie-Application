@@ -114,7 +114,6 @@ public class Database {
 
     Movie shawshank = new Movie("4","Shawshank Redemption", "Drama", "1994",actorList,rating);
 
-
         //Fight Club
 
         //restart ArrayList
@@ -136,11 +135,64 @@ public class Database {
 
         Movie fightClub = new Movie("5","Fight Club","Drama","1999",actorList,rating);
 
+        //Inception
+
+        //restart ArrayList
+        actorList = new ArrayList<>();
+        rating = new ArrayList<>();
+
+        Actor leonardoDiCaprio = new Actor("Leonardo DiCaprio", "Cobb");
+        Actor josephGordonLevitt = new Actor("Joseph Gordon-Levitt", "Arthur");
+        Actor tomHardy2 = new Actor("Tom Hardy", "Eames");
+        Actor cillianMurphy = new Actor("Cillian Murphy", "Robert Fischer");
+
+        actorList.add(leonardoDiCaprio);
+        actorList.add(josephGordonLevitt);
+        actorList.add(tomHardy2);
+        actorList.add(cillianMurphy);
+
+        rating.add(8.9);
+        rating.add(7.9);
+        rating.add(7.9);
+        rating.add(7.4);
+        rating.add(7.8);
+        rating.add(8.1);
+
+        Movie inception = new Movie("6","Inception","Action","2010",actorList,rating);
+
+        //Seven
+
+        //restart ArrayList
+        actorList = new ArrayList<>();
+        rating = new ArrayList<>();
+
+        Actor morganFreeman2 = new Actor("Morgan Freeman", "Somerset");
+        Actor braddPitt = new Actor("Brad Pitt", "Mills");
+        Actor gwynethPaltrow = new Actor("Gwyneth Paltrow", "Tracy");
+        Actor kevinSpacey = new Actor("Kevin Spacey", "John Doe");
+
+        actorList.add(morganFreeman2);
+        actorList.add(braddPitt);
+        actorList.add(gwynethPaltrow);
+        actorList.add(kevinSpacey);
+
+        rating.add(8.9);
+        rating.add(8.2);
+        rating.add(8.4);
+        rating.add(7.4);
+        rating.add(7.8);
+        rating.add(8.1);
+
+        Movie seven = new Movie("7","Seven","Crime","1995",actorList,rating);
+
+        //Add movies to ArrayList
         movieList.add(titanic);
         movieList.add(madmax);
         movieList.add(dune);
         movieList.add(shawshank);
         movieList.add(fightClub);
+        movieList.add(inception);
+        movieList.add(seven);
 
         return movieList;
     }

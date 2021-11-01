@@ -3,7 +3,6 @@ import java.util.ArrayList;
 
 public class FileIO {
 
-
     public static void accountListSerialization(ArrayList<Account> accountList) {
 
         try {
@@ -49,7 +48,6 @@ public class FileIO {
             e.printStackTrace();
         }
     }
-
 
     public static ArrayList<Movie> movieListDeserialization() {
 

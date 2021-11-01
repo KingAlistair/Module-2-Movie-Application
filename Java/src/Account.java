@@ -23,6 +23,7 @@ public class Account implements java.io.Serializable {
         this.votedMovies = new ArrayList<>();
     }
 
+    //Puts account into list, saves it into file
     public static void saveUserIntoFile(Account user) {
         ArrayList<Account> accountlist = FileIO.accountListDeserialization();
 
@@ -34,15 +35,11 @@ public class Account implements java.io.Serializable {
                 FileIO.accountListSerialization(accountlist);
             }
         }
-        System.out.println("Your account was saved!\n");
+        System.out.println("Autosave");
     }
 
     public ArrayList<Movie> getVotedMovies() {
         return votedMovies;
-    }
-
-    public void setVotedMovies(ArrayList<Movie> votedMovies) {
-        this.votedMovies = votedMovies;
     }
 
     public void setFavoriteMovies(ArrayList<Movie> favoriteMovies) {

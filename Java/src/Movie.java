@@ -8,7 +8,7 @@ public class Movie implements java.io.Serializable {
     ArrayList<Actor> actorList;
     ArrayList<Double> rating;
 
-    public Movie(String id,String title, String genre, String releaseYear, ArrayList<Actor> actorList, ArrayList<Double> rating) {
+    public Movie(String id, String title, String genre, String releaseYear, ArrayList<Actor> actorList, ArrayList<Double> rating) {
         this.id = id;
         this.title = title;
         this.genre = genre;
@@ -21,15 +21,8 @@ public class Movie implements java.io.Serializable {
         return id;
     }
 
-    public String getGenre() {
-        return genre;
-    }
-
-    public String getReleaseYear() {
-        return releaseYear;
-    }
-
     public String getTitle() {
+
         return title;
     }
 
@@ -41,10 +34,7 @@ public class Movie implements java.io.Serializable {
         return rating;
     }
 
-    public void setRating(ArrayList<Double> rating) {
-        this.rating = rating;
-    }
-
+    //Format to display Movies
     public void displayMovie() {
         System.out.println("====================================");
         System.out.println("Id: " + id);
@@ -73,16 +63,13 @@ public class Movie implements java.io.Serializable {
     public Double calculateRating() {
         double avrgRate = 0.0;
 
-
         for (Double rate : rating
         ) {
             avrgRate += rate;
         }
         avrgRate /= rating.size();
 
-
         avrgRate = Math.round(avrgRate * 1000.0) / 1000.0;
-
 
         return avrgRate;
     }

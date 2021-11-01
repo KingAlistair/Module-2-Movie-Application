@@ -1,9 +1,9 @@
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Menu {
 
+    //Welcome menu
     public void welcome() {
         System.out.println();
         System.out.println("Welcome to the Movie app!");
@@ -37,7 +37,7 @@ public class Menu {
     }
 
     public void login() {
-        //Create Arraylist, load from accountList.ser
+        //Create accountList, load with data from accountList.ser
         ArrayList<Account> accountList = FileIO.accountListDeserialization();
         System.out.println("We currently have " + accountList.size() + " users.");
 
@@ -101,23 +101,23 @@ public class Menu {
         System.out.println("Choose a password!");
         String password = stringScanner();
 
-        //Create Account add it to accountlist
+        //Create Account, add it to accountlist
         Account account = new Account(username, password);
         accountList.add(account);
 
         //accountList saved into File
         FileIO.accountListSerialization(accountList);
-
         System.out.println("Registration is complete. Please log in!\n");
         login();
     }
 
     public void mainMenu(Account user) {
+        ArrayList<Movie> allMovies = FileIO.movieListDeserialization();
         updateUserLists(user);
 
         System.out.println("Main menu:");
         System.out.println();
-        System.out.println("1. All movies");
+        System.out.println("1. All movies (" + allMovies.size() + ")");
         System.out.println("2. Favorite movies (" + user.favoriteMovies.size() + ")");
         System.out.println("3. History (" + user.seenMovies.size() + ")");
         System.out.println("4. Search movie");
@@ -147,7 +147,8 @@ public class Menu {
                 mainMenu(user);
                 break;
 
-            case "5": ;
+            case "5":
+                ;
                 rateMovie(user);
                 mainMenu(user);
                 break;
@@ -164,14 +165,17 @@ public class Menu {
     }
 
     public void favoriteMovies(Account user) {
+        //Create ArrayLists, load data from file
         ArrayList<Movie> allMovies = FileIO.movieListDeserialization();
         ArrayList<Movie> favoriteList = user.favoriteMovies;
         System.out.println("Favorite list:");
         displayMovieList(favoriteList);
 
+        System.out.println("-------------------------------------");
         System.out.println("1. Add movie");
         System.out.println("2. Remove movie");
-        System.out.println(" Press ENTER to Return to main menu");
+        System.out.println(" Press 'ENTER' to Return to main menu");
+        System.out.println("-------------------------------------");
         String input = stringScanner();
 
         switch (input) {
@@ -180,7 +184,7 @@ public class Menu {
             case "1":
                 System.out.println("All movies:");
                 displayMovieList(allMovies);
-                System.out.println("Choose a Movie ID to add it your Favorite list!");
+                System.out.println("Type in a Movie ID to add it to your Favorite list!");
                 input = stringScanner();
 
                 //Check if already in favoriteList
@@ -342,63 +346,49 @@ public class Menu {
     }
 
     public void rateMovie(Account user) {
+        //Create Arraylists, load them with data
         ArrayList<Movie> allMovies = FileIO.movieListDeserialization();
         ArrayList<Movie> votedMovies = user.getVotedMovies();
         System.out.println(votedMovies.size());
         displayMovieList(allMovies);
+
         System.out.println("Write in the ID of the movie you want to rate!");
         String input = stringScanner();
-        Movie chosenMovie = getMovieById(input);
 
+        //Check if movie is in database, return it
+        Movie chosenMovie = checkMovieInArray(input, allMovies);
         if (chosenMovie != null) {
-            for (Movie movie : votedMovies
-            ) {
-                if (chosenMovie.id.equals(movie.id)) {
-                    System.out.println("This account already voted for this movie!");
-                    chosenMovie = null;
-                }
-            }
 
-            //CHeck if movie is in Database
-            for (Movie movie : allMovies) {
-                if (input.equals(movie.getId())) {
-                    chosenMovie = movie;
+            //Check if movie is in votedList
+            Movie isVotedMovie = checkMovieInArray(input, votedMovies);
 
-                    //Check if user already voted for movie
-                    if (votedMovies != null) {
-                        for (Movie movie2 : votedMovies
-                        ) {
-                            if (chosenMovie.getTitle().equals(movie2.getTitle())) {
-                                System.out.println("This account already voted for this movie!");
-                                chosenMovie = null;
-                            }
-                        }
-                        //If haven't voted yet
-                        if (chosenMovie != null) {
-                            System.out.println("Rate " + chosenMovie.title + " (1-10)");
-                            Scanner sc = new Scanner(System.in);
-                            String vote = sc.nextLine();
-                            Double doubleVote = Double.parseDouble(vote);
+            //If not, user can vote
+            if (isVotedMovie == null) {
+                System.out.println("Rate " + chosenMovie.title + " (1-10)");
+                Scanner sc = new Scanner(System.in);
+                String vote = sc.nextLine();
+                Double doubleVote = Double.parseDouble(vote);
 
-                            ArrayList<Double> rating = chosenMovie.getRating();
-                            rating.add(doubleVote);
-                            for (Movie movie3 : allMovies
-                            ) {
-                                if (chosenMovie.getId().equals(movie3.getId())) {
-                                    chosenMovie = movie3;
-
-                                }
-                            }
-                            System.out.println("Vote registered!");
-
-                            votedMovies.add(chosenMovie);
-                            System.out.println();
-                            FileIO.movieListSerialization(allMovies);
-                           // Account.saveUserIntoFile(user);
-                        }
+                ArrayList<Double> rating = chosenMovie.getRating();
+                rating.add(doubleVote);
+                for (Movie movie3 : allMovies
+                ) {
+                    if (chosenMovie.getId().equals(movie3.getId())) {
+                        chosenMovie = movie3;
                     }
                 }
+                System.out.println("Vote registered!\n");
+
+                //Save user and movielist into File
+                votedMovies.add(chosenMovie);
+                FileIO.movieListSerialization(allMovies);
+                Account.saveUserIntoFile(user);
+            } else {
+                System.out.println("You have already voted for this movie!");
             }
+        } else {
+            System.out.println("Return to Main menu...");
+            mainMenu(user);
         }
     }
 
@@ -420,10 +410,10 @@ public class Menu {
         FileIO.movieListSerialization(Database.getMovieList());
     }
 
-    public static Movie getMovieById(String input) {
-        ArrayList<Movie> allMovies = FileIO.movieListDeserialization();
+    //Check if Movie is in arraylist, returns movie or null
+    public static Movie checkMovieInArray(String input, ArrayList<Movie> checkList) {
 
-        for (Movie movie : allMovies
+        for (Movie movie : checkList
         ) {
             if (input.equals(movie.getId())) {
                 return movie;
@@ -433,7 +423,8 @@ public class Menu {
         return null;
     }
 
-    public static void updateUserLists (Account user) {
+    //Update user favorite and history list after rating
+    public static void updateUserLists(Account user) {
         ArrayList<Movie> favoriteList = user.getFavoriteMovies();
         ArrayList<Movie> seenList = user.getSeenMovies();
         ArrayList<Movie> allMovies = FileIO.movieListDeserialization();
@@ -443,7 +434,7 @@ public class Menu {
         ) {
             for (int i = 0; i < favoriteList.size(); i++) {
                 if (favoriteList.get(i).getId().equals(movie.getId())) {
-                    favoriteList.set(i,movie);
+                    favoriteList.set(i, movie);
                 }
             }
         }
@@ -453,12 +444,12 @@ public class Menu {
         ) {
             for (int i = 0; i < seenList.size(); i++) {
                 if (seenList.get(i).getId().equals(movie.getId())) {
-                    seenList.set(i,movie);
+                    seenList.set(i, movie);
                 }
             }
         }
 
-        //Save lists, and user
+        //Set lists
         user.setFavoriteMovies(favoriteList);
         user.setSeenMovies(seenList);
         Account.saveUserIntoFile(user);
