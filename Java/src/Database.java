@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 
+
 public class Database {
 
     public static ArrayList<Account> getAccountList () {
@@ -7,6 +8,7 @@ public class Database {
         ArrayList<Movie> favoriteList = new ArrayList<>();
         ArrayList<Movie> seenList = new ArrayList<>();
         ArrayList<Account> accountList = new ArrayList<>();
+        ArrayList<Movie> votedList = new ArrayList<>();
 
         Movie movie1 = allMovieList.get(0);
         Movie movie2 = allMovieList.get(1);
@@ -20,8 +22,8 @@ public class Database {
         favoriteList.add(movie1);
         favoriteList.add(movie3);
 
-        Account account1 = new Account("Test","test");
-        Account account2 = new Account("Tim","enchanter",favoriteList,seenList);
+        Account account1 = new Account("Test","test",favoriteList,seenList,votedList);
+        Account account2 = new Account("Tim","enchanter",favoriteList,seenList,votedList);
 
         accountList.add(account1);
         accountList.add(account2);

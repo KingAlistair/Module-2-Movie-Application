@@ -3,9 +3,9 @@ import java.util.ArrayList;
 public class Account implements java.io.Serializable {
     private String userName;
     private String password;
-    ArrayList<Movie> favoriteMovies;
-    ArrayList<Movie> seenMovies;
-    ArrayList<Movie> votedMovies;
+    private  ArrayList<Movie> favoriteMovies;
+    private ArrayList<Movie> seenMovies;
+    private ArrayList<Movie> votedMovies;
 
     public Account(String userName, String password) {
         this.userName = userName;
@@ -15,12 +15,12 @@ public class Account implements java.io.Serializable {
         this.votedMovies = new ArrayList<>();
     }
 
-    public Account(String userName, String password, ArrayList<Movie> favoriteMovies, ArrayList<Movie> seenMovies) {
+    public Account(String userName, String password, ArrayList<Movie> favoriteMovies, ArrayList<Movie> seenMovies, ArrayList<Movie> votedMovies) {
         this.userName = userName;
         this.password = password;
         this.favoriteMovies = favoriteMovies;
         this.seenMovies = seenMovies;
-        this.votedMovies = new ArrayList<>();
+        this.votedMovies = votedMovies;
     }
 
     //Puts account into list, saves it into file
@@ -32,10 +32,12 @@ public class Account implements java.io.Serializable {
             {
                 accountlist.set(i,user);
 
-                FileIO.accountListSerialization(accountlist);
+                FileIO.accountListSerialization(accountlist);;
             }
+
+
         }
-        System.out.println("Autosave");
+        System.out.println("Account was saved!");
     }
 
     public ArrayList<Movie> getVotedMovies() {

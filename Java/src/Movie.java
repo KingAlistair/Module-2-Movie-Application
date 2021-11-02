@@ -1,12 +1,14 @@
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 
 public class Movie implements java.io.Serializable {
-    String id;
-    String title;
-    String genre;
-    String releaseYear;
-    ArrayList<Actor> actorList;
-    ArrayList<Double> rating;
+  private String id;
+  private String title;
+  private String genre;
+  private String releaseYear;
+  private ArrayList<Actor> actorList;
+  private ArrayList<Double> rating;
 
     public Movie(String id, String title, String genre, String releaseYear, ArrayList<Actor> actorList, ArrayList<Double> rating) {
         this.id = id;
@@ -17,22 +19,6 @@ public class Movie implements java.io.Serializable {
         this.rating = rating;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public String getTitle() {
-
-        return title;
-    }
-
-    public ArrayList<Actor> getActorList() {
-        return actorList;
-    }
-
-    public ArrayList<Double> getRating() {
-        return rating;
-    }
 
     //Format to display Movies
     public void displayMovie() {
@@ -61,6 +47,7 @@ public class Movie implements java.io.Serializable {
     }
 
     public Double calculateRating() {
+        //Average
         double avrgRate = 0.0;
 
         for (Double rate : rating
@@ -69,8 +56,58 @@ public class Movie implements java.io.Serializable {
         }
         avrgRate /= rating.size();
 
-        avrgRate = Math.round(avrgRate * 1000.0) / 1000.0;
 
-        return avrgRate;
+        //Rounding double
+        BigDecimal bd = BigDecimal.valueOf(avrgRate);
+        bd = bd.setScale(1, RoundingMode.HALF_UP);
+        return bd.doubleValue();
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getGenre() {
+        return genre;
+    }
+
+    public void setGenre(String genre) {
+        this.genre = genre;
+    }
+
+    public String getReleaseYear() {
+        return releaseYear;
+    }
+
+    public void setReleaseYear(String releaseYear) {
+        this.releaseYear = releaseYear;
+    }
+
+    public ArrayList<Actor> getActorList() {
+        return actorList;
+    }
+
+    public void setActorList(ArrayList<Actor> actorList) {
+        this.actorList = actorList;
+    }
+
+    public ArrayList<Double> getRating() {
+        return rating;
+    }
+
+    public void setRating(ArrayList<Double> rating) {
+        this.rating = rating;
     }
 }
