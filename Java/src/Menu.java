@@ -368,6 +368,7 @@ public class Menu {
         displayMovieList(allMovies);
 
         System.out.println("Write in the ID of the movie you want to rate!");
+        System.out.println("You can only rate a movie once!");
         String input = stringScanner();
 
         //Check if movie is in database, return it
@@ -384,7 +385,7 @@ public class Menu {
 
                 while (loop) {
 
-                    System.out.println("Rate " + chosenMovie.getTitle() + " (1-10)");
+                    System.out.println("Rate the movie! " + chosenMovie.getTitle() + " (1-10)");
                     String vote = stringScanner();
                     doubleVote = Double.parseDouble(vote);
 
@@ -407,7 +408,7 @@ public class Menu {
                         }
 
                     } else {
-                        System.out.println("Rate between! (1-10)");
+                        System.out.println("Invalid rating!");
 
                     }
                 }

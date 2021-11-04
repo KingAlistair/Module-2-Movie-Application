@@ -37,7 +37,7 @@ public class Account implements java.io.Serializable {
 
 
         }
-        System.out.println("Account was saved!");
+        System.out.println("-Account was saved!-\n");
     }
 
     public ArrayList<Movie> getVotedMovies() {
