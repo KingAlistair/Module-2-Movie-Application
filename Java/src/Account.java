@@ -23,35 +23,6 @@ public class Account implements java.io.Serializable {
         this.votedMovies = votedMovies;
     }
 
-    //Puts account into list, saves it into file
-    public static void saveUserIntoFile(Account user) {
-        ArrayList<Account> accountlist = FileIO.accountListDeserialization();
-
-        for (int i = 0; i < accountlist.size(); i++) {
-            if (user.getUserName().equals(accountlist.get(i).getUserName()))
-            {
-                accountlist.set(i,user);
-
-                FileIO.accountListSerialization(accountlist);;
-            }
-
-
-        }
-        System.out.println("-Account was saved!-\n");
-    }
-
-    public ArrayList<Movie> getVotedMovies() {
-        return votedMovies;
-    }
-
-    public void setFavoriteMovies(ArrayList<Movie> favoriteMovies) {
-        this.favoriteMovies = favoriteMovies;
-    }
-
-    public void setSeenMovies(ArrayList<Movie> seenMovies) {
-        this.seenMovies = seenMovies;
-    }
-
     public String getUserName() {
         return userName;
     }
@@ -68,8 +39,32 @@ public class Account implements java.io.Serializable {
         return seenMovies;
     }
 
-    @Override
-    public String toString() {
-        return userName+";"+password+";";
+    public ArrayList<Movie> getVotedMovies() {
+        return votedMovies;
+    }
+
+    public void setFavoriteMovies(ArrayList<Movie> favoriteMovies) {
+        this.favoriteMovies = favoriteMovies;
+    }
+
+    public void setSeenMovies(ArrayList<Movie> seenMovies) {
+        this.seenMovies = seenMovies;
+    }
+
+    //Replaces original Account in list from updated Account, saves it into file
+    public static void saveUserIntoFile(Account user) {
+        ArrayList<Account> accountlist = FileIO.accountListDeserialization();
+
+        //Organise thy lists...
+        Menu.organiseUserLists(user);
+
+        for (int i = 0; i < accountlist.size(); i++) {
+            if (user.getUserName().equals(accountlist.get(i).getUserName()))
+            {
+                accountlist.set(i,user);
+                FileIO.accountListSerialization(accountlist);;
+            }
+        }
+        System.out.println("-Account was saved-\n");
     }
 }

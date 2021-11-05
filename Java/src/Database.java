@@ -187,6 +187,65 @@ public class Database {
 
         Movie seven = new Movie("7","Seven","Crime","1995",actorList,rating);
 
+        //The Sunset Limited
+
+        //restart ArrayList
+        actorList = new ArrayList<>();
+        rating = new ArrayList<>();
+
+        rating.add(8.9);
+        rating.add(8.3);
+        rating.add(8.4);
+        rating.add(7.4);
+        rating.add(7.5);
+        rating.add(7.9);
+
+        Actor samuelLJackson = new Actor("Samuel L. Jackson", "Black");
+        Actor tommyLeeJones = new Actor("Tommy Lee Jones", "White");
+        actorList.add(samuelLJackson);
+        actorList.add(tommyLeeJones);
+        Movie theSunsetLimited = new Movie("8","The Sunset Limited", "Drama", "2011",actorList,rating);
+
+        //Trainspotting
+
+        rating = new ArrayList<>();
+
+        rating.add(8.9);
+        rating.add(8.3);
+        rating.add(8.4);
+        rating.add(8.4);
+        rating.add(7.5);
+        rating.add(8.9);
+
+        actorList = new ArrayList<>();
+        Actor a3 = new Actor("Ewan McGregor","Renton");
+        Actor a4 = new Actor("Johnny Lee Miller","Sick Boy");
+        Actor a5 = new Actor("Kelly MacDonald","Diane");
+        actorList.add(a3);
+        actorList.add(a4);
+        actorList.add(a5);
+        Movie trainSpotting = new Movie("9","Trainspotting", "Drama", "1996",actorList,rating);
+
+        //Inside Llewyn Davis
+
+        rating = new ArrayList<>();
+
+        rating.add(8.9);
+        rating.add(8.3);
+        rating.add(8.4);
+        rating.add(8.4);
+        rating.add(7.5);
+        rating.add(8.9);
+
+        actorList = new ArrayList<>();
+        Actor a7 = new Actor("Oscar Isaac", "Llewyn Davis");
+        Actor a8 = new Actor("Carrie Mulligan", "Jean");
+        Actor a9 = new Actor("John Goodman", "Roland Turner");
+        actorList.add(a7);
+        actorList.add(a8);
+        actorList.add(a9);
+        Movie insideLleweynDavis = new Movie("10","Inside Llewyn Davis", "Drama", "2013",actorList,rating);
+
         //Add movies to ArrayList
         movieList.add(titanic);
         movieList.add(madmax);
@@ -195,6 +254,9 @@ public class Database {
         movieList.add(fightClub);
         movieList.add(inception);
         movieList.add(seven);
+        movieList.add(theSunsetLimited);
+        movieList.add(trainSpotting);
+        movieList.add(insideLleweynDavis);
 
         return movieList;
     }
