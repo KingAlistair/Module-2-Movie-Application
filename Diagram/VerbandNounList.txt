@@ -1,0 +1,25 @@
+Verb list:
+Register
+Login
+Play Movie
+Update History
+Add to favorites
+Manage favorites
+Manage History
+Search
+Rate Movie
+
+Noun List:
+User
+System
+History list
+Favorite list
+Movie
+Rating
+Actor
+
+Informal:
+
+Register: User registers a new Account
+Login: User logs in with existing Account
+Play Movie: User prints out details of the selected movie
